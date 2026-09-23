@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scroll Recorder</title>
+  <style>
+    :root {
+      color-scheme: dark;
+
+      --primary: #ff0000;
+      --primary-hover: #e60000;
+      --primary-active: #cc0000;
+
+      --bg: #121212;
+      --surface: #1b1b1b;
+      --border: #2e2e2e;
+      --border-hover: #454545;
+      --text: #f2f2f2;
+      --text-muted: #8f8f8f;
+
+      --radius: 6px;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      width: 300px;
+      margin: 0;
+      padding: var(--space-5);
+      background: var(--bg);
+      color: var(--text);
+      font: 13px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-5);
+    }
+    header::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+    h1 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .field { margin-bottom: var(--space-3); }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+    }
+
+    label {
+      display: block;
+      margin-bottom: var(--space-1);
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    input, select {
+      width: 100%;
+      height: 36px;
+      padding: 0 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font: inherit;
+      font-variant-numeric: tabular-nums;
+      transition: border-color 0.15s;
+    }
+    input:hover, select:hover { border-color: var(--border-hover); }
+
+    select {
+      appearance: none;
+      padding-right: 30px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%238f8f8f' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      cursor: pointer;
+    }
+
+    :is(input, select, button):focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .actions {
+      display: grid;
+      gap: var(--space-2);
+      margin-top: var(--space-5);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--border);
+    }
+
+    button {
+      height: 38px;
+      padding: 0 var(--space-4);
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.15s, border-color 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-primary:active { background: var(--primary-active); }
+
+    .btn-secondary {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text);
+    }
+    .btn-secondary:hover {
+      border-color: var(--border-hover);
+      background: var(--surface);
+    }
+
+    button:disabled {
+      background: var(--surface);
+      border-color: var(--border);
+      color: var(--text-muted);
+      cursor: not-allowed;
+    }
+
+    #status {
+      min-height: 18px;
+      margin-top: var(--space-3);
+      color: var(--text-muted);
+      font-size: 12px;
+      text-align: center;
+    }
+    #status.error { color: var(--primary); }
+
+    footer {
+      margin-top: var(--space-4);
+      padding-top: var(--space-3);
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 11px;
+      text-align: center;
+    }
+    footer strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Scroll Recorder</h1>
+  </header>
+
+  <div class="row">
+    <div class="field">
+      <label for="duration">Duration (sec)</label>
+      <input type="number" id="duration" value="10" min="2" max="120">
+    </div>
+    <div class="field">
+      <label for="countdown">Countdown (sec)</label>
+      <input type="number" id="countdown" value="3" min="0" max="10">
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="resolution">Resolution</label>
+    <select id="resolution">
+      <option value="1920x1080" selected>1080p (1920 × 1080)</option>
+      <option value="3840x2160">4K (3840 × 2160)</option>
+      <option value="1080x1920">Mobile vertical (1080 × 1920)</option>
+      <option value="1280x720">720p (1280 × 720)</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="quality">Quality</label>
+    <select id="quality">
+      <option value="12000000">Ultra (12 Mbps)</option>
+      <option value="8000000" selected>High (8 Mbps)</option>
+      <option value="4000000">Medium (4 Mbps)</option>
+      <option value="2000000">Low (2 Mbps)</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="easing">Easing</label>
+    <select id="easing">
+      <option value="easeInOutQuart" selected>Smooth start and end</option>
+      <option value="linear">Constant speed</option>
+      <option value="easeOutExpo">Fast start, slow end</option>
+    </select>
+  </div>
+
+  <div class="actions">
+    <button id="startRecordBtn" class="btn-primary">Record and scroll</button>
+    <button id="startScrollOnlyBtn" class="btn-secondary">Scroll only</button>
+  </div>
+
+  <div id="status" role="status" aria-live="polite"></div>
+
+  <footer>Made with love by <strong>hawryyy30</strong></footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
