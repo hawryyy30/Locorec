@@ -107,40 +107,52 @@ There is no build step. Edit the files and click the reload icon on the extensio
 ## FAQ
 
 **Why can't I record `chrome://` pages or the Chrome Web Store?**
-Chrome does not allow extensions to inject scripts into internal pages or the Web Store. The popup will tell you when the current tab is not supported.
+
+>Chrome does not allow extensions to inject scripts into internal pages or the Web Store. The popup will tell you when the current tab is not supported.
 
 **Does it record audio?**
-No. Only video is captured.
+
+>No. Only video is captured.
 
 **Why is the video slightly longer than the duration I set?**
-Recording starts before the scroll begins and continues for a short moment after it ends, so the first and last frames are not clipped.
+
+>Recording starts before the scroll begins and continues for a short moment after it ends, so the first and last frames are not clipped.
 
 **Why does the page look different while recording?**
-The scrollbar is hidden during the run so it does not appear in the video. It is restored as soon as recording stops.
+
+>The scrollbar is hidden during the run so it does not appear in the video. It is restored as soon as recording stops.
 
 **Can I switch tabs while it records?**
-No. Browsers slow down animation in background tabs, which makes the scroll stutter. Keep the tab in the foreground until the file is saved.
+
+>No. Browsers slow down animation in background tabs, which makes the scroll stutter. Keep the tab in the foreground until the file is saved.
 
 **The scroll does not move, or stops partway. Why?**
-The extension scrolls the main document. Pages that scroll inside a nested container, use a scroll-hijacking library, or load more content as you scroll are not fully supported.
+
+>The extension scrolls the main document. Pages that scroll inside a nested container, use a scroll-hijacking library, or load more content as you scroll are not fully supported.
 
 **Does the vertical preset make the page render as a mobile site?**
-No. It sets the video dimensions to 1080 x 1920 but does not resize the viewport, so responsive layouts still respond to your actual window width. To capture a mobile layout, narrow the browser window or use device emulation in DevTools first.
+
+>No. It sets the video dimensions to 1080 x 1920 but does not resize the viewport, so responsive layouts still respond to your actual window width. To capture a mobile layout, narrow the browser window or use device emulation in DevTools first.
 
 **The recording is choppy or my computer struggles at 4K.**
-4K capture is CPU and GPU intensive. Lower the resolution to 1080p or drop the quality preset. Closing other heavy tabs also helps.
+
+>4K capture is CPU and GPU intensive. Lower the resolution to 1080p or drop the quality preset. Closing other heavy tabs also helps.
 
 **Why is the file so large?**
-File size follows the bitrate. Ultra (12 Mbps) uses roughly 90 MB per minute. Use High or Medium for smaller files.
+
+>File size follows the bitrate. Ultra (12 Mbps) uses roughly 90 MB per minute. Use High or Medium for smaller files.
 
 **MP4 or WebM?**
-The extension picks MP4 when your browser supports it and falls back to WebM otherwise. MP4 is more widely accepted by video editors and social platforms.
+
+>The extension picks MP4 when your browser supports it and falls back to WebM otherwise. MP4 is more widely accepted by video editors and social platforms.
 
 **I clicked Start and nothing happened.**
-Check the toolbar badge. A `!` means the run failed, and the service worker console shows the reason. A message that a run is already in progress means the previous recording is still being saved.
+
+>Check the toolbar badge. A `!` means the run failed, and the service worker console shows the reason. A message that a run is already in progress means the previous recording is still being saved.
 
 **Is any data collected or uploaded?**
-No. Recording, encoding and saving all happen locally. The only stored data is your last-used settings, kept in `chrome.storage.local`.
+
+>No. Recording, encoding and saving all happen locally. The only stored data is your last-used settings, kept in `chrome.storage.local`.
 
 ## Contributing
 
